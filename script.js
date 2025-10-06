@@ -1,96 +1,95 @@
-// 📌 Al cargar la página, recuperar y mostrar comentarios guardados
-window.onload = function() {
+// Al cargar la página, se muestran los comentarios guardados
+window.onload = function () {
   const comentariosGuardados = JSON.parse(localStorage.getItem('comentarios')) || [];
-  comentariosGuardados.forEach(c => mostrarComentario(c));
+  comentariosGuardados.forEach(mostrarComentario);
 };
 
-// 📌 Función para agregar un nuevo comentario
-function agregarComentario() {
-  const nombreInput = document.getElementById('nombre');
-  const mensajeInput = document.getElementById('mensaje');
-  const imagenInput = document.getElementById('imagen');
+// Función para agregar un nuevo comentario
+function agregarComentario(event) {
+  event.preventDefault(); // Evita que se recargue la página
 
-  const nombre = nombreInput.value.trim();
-  const mensaje = mensajeInput.value.trim();
+  const nombre = document.getElementById('nombre').value.trim();
+  const mensaje = document.getElementById('mensaje').value.trim();
+  const imagenInput = document.getElementById('imagen');
+  const archivo = imagenInput.files[0];
 
   if (!nombre || !mensaje) {
-    alert('Por favor escribe tu nombre y comentario.');
+    alert('Por favor, completa todos los campos requeridos.');
     return;
   }
 
-  const fechaTexto = new Date().toLocaleString();
-  let imagenData = null;
-
-  // 📎 Si se seleccionó una imagen, leerla
-  if (imagenInput.files && imagenInput.files[0]) {
-    const lector = new FileReader();
-    lector.onload = function(e) {
-      imagenData = e.target.result;
-      guardarYMostrar({ nombre, mensaje, fechaTexto, imagenData });
+  // Si se sube imagen, convertirla a Base64 para almacenarla
+  if (archivo) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const imagenBase64 = e.target.result;
+      const nuevoComentario = { nombre, mensaje, imagen: imagenBase64, id: Date.now() };
+      guardarYMostrar(nuevoComentario);
     };
-    lector.readAsDataURL(imagenInput.files[0]);
+    reader.readAsDataURL(archivo);
   } else {
-    guardarYMostrar({ nombre, mensaje, fechaTexto, imagenData });
+    const nuevoComentario = { nombre, mensaje, imagen: null, id: Date.now() };
+    guardarYMostrar(nuevoComentario);
   }
 
-  // ✨ Limpiar campos después de publicar
-  nombreInput.value = '';
-  mensajeInput.value = '';
-  imagenInput.value = '';
+  // Reiniciar el formulario
+  document.getElementById('form-comentario').reset();
 }
 
-// 📌 Guardar comentario en localStorage y mostrarlo
+// Guarda el comentario en localStorage y lo muestra en pantalla
 function guardarYMostrar(comentario) {
-  const comentariosGuardados = JSON.parse(localStorage.getItem('comentarios')) || [];
-  comentariosGuardados.push(comentario);
-  localStorage.setItem('comentarios', JSON.stringify(comentariosGuardados));
+  const comentarios = JSON.parse(localStorage.getItem('comentarios')) || [];
+  comentarios.push(comentario);
+  localStorage.setItem('comentarios', JSON.stringify(comentarios));
   mostrarComentario(comentario);
 }
 
-// 📌 Crear y mostrar visualmente el comentario
-function mostrarComentario({ nombre, mensaje, fechaTexto, imagenData }) {
-  const comentariosDiv = document.getElementById('comentarios');
+// Crea el elemento visual de un comentario
+function mostrarComentario(comentario) {
+  const contenedor = document.getElementById('comentarios');
 
-  // 🧱 Contenedor del comentario
-  const comentarioDiv = document.createElement('div');
-  comentarioDiv.classList.add('comment');
+  const div = document.createElement('div');
+  div.classList.add('comentario');
 
-  // 👤 Nombre
-  const nombreEl = document.createElement('strong');
-  nombreEl.textContent = nombre;
+  const header = document.createElement('div');
+  header.classList.add('comentario-header');
+  header.innerHTML = <strong>${comentario.nombre}</strong> <span>${new Date(comentario.id).toLocaleString()}</span>;
 
-  // 💬 Mensaje
-  const mensajeEl = document.createElement('p');
-  mensajeEl.textContent = mensaje;
+  const p = document.createElement('p');
+  p.textContent = comentario.mensaje;
 
-  // ⏰ Fecha
-  const fechaEl = document.createElement('small');
-  fechaEl.textContent = fechaTexto;
+  div.appendChild(header);
+  div.appendChild(p);
 
-  comentarioDiv.appendChild(nombreEl);
-  comentarioDiv.appendChild(mensajeEl);
-  comentarioDiv.appendChild(fechaEl);
-
-  // 🖼 Imagen opcional
-  if (imagenData) {
+  if (comentario.imagen) {
     const img = document.createElement('img');
-    img.src = imagenData;
-    img.alt = 'Imagen del comentario';
-    img.style.maxWidth = '150px';
-    img.style.display = 'block';
-    img.style.marginTop = '8px';
-    comentarioDiv.appendChild(img);
+    img.src = comentario.imagen;
+    img.alt = Imagen subida por ${comentario.nombre};
+    div.appendChild(img);
   }
 
-  comentariosDiv.appendChild(comentarioDiv);
+  const btnEliminar = document.createElement('button');
+  btnEliminar.textContent = '❌ Eliminar';
+  btnEliminar.classList.add('btn-eliminar');
+  btnEliminar.onclick = function () {
+    eliminarComentario(comentario.id);
+    div.remove();
+  };
 
-  // 📜 Desplazarse hacia el último comentario
-  comentarioDiv.scrollIntoView({ behavior: 'smooth' });
+  div.appendChild(btnEliminar);
+  contenedor.appendChild(div);
 }
 
-// 🧹 Borrar todos los comentarios
+// Elimina un solo comentario del localStorage
+function eliminarComentario(id) {
+  let comentarios = JSON.parse(localStorage.getItem('comentarios')) || [];
+  comentarios = comentarios.filter(c => c.id !== id);
+  localStorage.setItem('comentarios', JSON.stringify(comentarios));
+}
+
+// Borra todos los comentarios
 function borrarComentarios() {
-  if (confirm("¿Estás seguro de borrar todos los comentarios?")) {
+  if (confirm('¿Estás seguro de que deseas borrar todos los comentarios?')) {
     localStorage.removeItem('comentarios');
     document.getElementById('comentarios').innerHTML = '<h3>Comentarios</h3>';
   }
