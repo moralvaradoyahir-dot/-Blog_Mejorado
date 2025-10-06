@@ -1,15 +1,19 @@
-/* ===== Estilos generales ===== */
+/* =========================
+   ESTILOS GENERALES
+========================= */
 body {
-  font-family: 'Segoe UI', Arial, sans-serif; /* Fuente moderna */
+  font-family: 'Segoe UI', Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background: #f0f4f8; /* Azul grisáceo muy claro */
-  color: #1f2937; /* Gris oscuro elegante para el texto */
+  background: #f0f4f8; /* Azul grisáceo claro */
+  color: #1f2937; /* Gris oscuro para texto */
 }
 
-/* ===== Encabezado ===== */
+/* =========================
+   ENCABEZADO
+========================= */
 header {
-  background: linear-gradient(135deg, #0f4c81, #00b4d8); /* Degradado azul profundo a turquesa */
+  background: linear-gradient(135deg, #0f4c81, #00b4d8);
   color: white;
   text-align: center;
   padding: 1.5rem;
@@ -22,7 +26,9 @@ header h1 {
   letter-spacing: 1px;
 }
 
-/* ===== Contenido principal ===== */
+/* =========================
+   CONTENIDO PRINCIPAL
+========================= */
 main {
   max-width: 800px;
   margin: 30px auto;
@@ -40,7 +46,9 @@ h2 {
   font-size: 1.4rem;
 }
 
-/* ===== Formulario de comentarios ===== */
+/* =========================
+   FORMULARIO DE COMENTARIOS
+========================= */
 .comment-form {
   margin-bottom: 20px;
 }
@@ -52,7 +60,7 @@ h2 {
   margin: 8px 0;
   padding: 12px;
   border-radius: 6px;
-  border: 1px solid #cbd5e1; /* Gris suave */
+  border: 1px solid #cbd5e1;
   font-size: 1rem;
   box-sizing: border-box;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -87,7 +95,9 @@ h2 {
   background: #dc2626;
 }
 
-/* ===== Comentarios publicados ===== */
+/* =========================
+   COMENTARIOS PUBLICADOS
+========================= */
 .comment {
   border-bottom: 1px solid #e2e8f0;
   padding: 12px 0;
