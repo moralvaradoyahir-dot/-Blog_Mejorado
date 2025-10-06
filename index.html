@@ -1,38 +1,64 @@
-<!DOCTYPE html> <!-- Indica que el documento está escrito en HTML5 -->
-<html lang="es"> <!-- Define el idioma principal del contenido como español -->
-<head> <!-- Contiene la información meta y de configuración del documento -->
-  <meta charset="UTF-8"> <!-- Establece la codificación de caracteres en UTF-8 (soporta ñ, tildes, etc.) -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Ajusta el diseño a dispositivos móviles (responsivo) -->
-  <title>Mini Blog con Comentarios</title> <!-- Título de la pestaña del navegador -->
-  <link rel="stylesheet" href="css/styles.css"> <!-- Vincula la hoja de estilos CSS externa -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mini Blog con Comentarios</title>
+  <link rel="stylesheet" href="css/styles.css">
 </head>
-<body> <!-- Cuerpo del documento, donde se muestra el contenido visible -->
+<body>
 
-  <header> <!-- Encabezado principal del sitio -->
-    <h1>Mi Blog de Programación</h1> <!-- Título destacado del blog -->
+  <header>
+    <h1>💻 Mi Blog de Programación</h1>
+    <p>Comparte tus ideas, deja tus comentarios y participa</p>
   </header>
-  
-  <main> <!-- Contenido principal de la página -->
-    <article> <!-- Contenedor de un artículo o publicación -->
-      <h2>Bienvenidos</h2> <!-- Subtítulo del artículo -->
-      <p>Este es un blog demostrativo para la clase de Programación Web. Aquí podrán dejar sus comentarios y subir imágenes.</p> <!-- Texto introductorio -->
+
+  <main>
+    <article>
+      <h2>Bienvenidos</h2>
+      <p>
+        Este es un blog demostrativo para la clase de <strong>Programación Web</strong>.  
+        Puedes escribir un comentario y adjuntar una imagen opcional.  
+        Todos los comentarios se guardan en tu navegador.
+      </p>
     </article>
 
-    <section class="comment-form"> <!-- Sección que contiene el formulario de comentarios -->
-      <h3>Agregar un comentario</h3> <!-- Subtítulo de la sección -->
-      <input type="text" id="nombre" placeholder="Tu nombre" required> <!-- Campo de texto para escribir el nombre (obligatorio) -->
-      <textarea id="mensaje" rows="3" placeholder="Escribe tu comentario" required></textarea> <!-- Área de texto para el comentario (obligatoria) -->
-      <input type="file" id="imagen" accept="image/*"> <!-- Campo para subir una imagen (solo formatos de imagen) -->
-      <button onclick="agregarComentario()">Publicar comentario</button> <!-- Botón que ejecuta la función JavaScript para publicar -->
-      <button onclick="borrarComentarios()" class="btn-delete">Borrar todos los comentarios</button> <!-- Botón que ejecuta la función JavaScript para eliminar todos los comentarios -->
+    <section class="comment-form">
+      <h3>Agregar un comentario</h3>
+
+      <form id="form-comentario" onsubmit="agregarComentario(event)">
+        <div class="form-group">
+          <label for="nombre">Nombre:</label>
+          <input type="text" id="nombre" placeholder="Tu nombre" required>
+        </div>
+
+        <div class="form-group">
+          <label for="mensaje">Comentario:</label>
+          <textarea id="mensaje" rows="3" placeholder="Escribe tu comentario aquí..." required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="imagen">Subir imagen (opcional):</label>
+          <input type="file" id="imagen" accept="image/*">
+        </div>
+
+        <div class="form-buttons">
+          <button type="submit">📤 Publicar</button>
+          <button type="button" class="btn-delete" onclick="borrarComentarios()">🗑 Borrar todos</button>
+        </div>
+      </form>
     </section>
 
-    <section id="comentarios"> <!-- Sección donde se mostrarán los comentarios -->
-      <h3>Comentarios</h3> <!-- Subtítulo de la sección -->
-      <!-- Aquí aparecerán los comentarios --> <!-- Comentario dentro del código (no se muestra en la página) -->
+    <section id="comentarios" aria-live="polite">
+      <h3>Comentarios</h3>
+      <!-- Comentarios generados dinámicamente -->
     </section>
   </main>
 
-  <script src="js/script.js"></script> <!-- Vincula el archivo externo de JavaScript -->
+  <footer>
+    <p>© 2025 Mini Blog — Proyecto de Programación Web</p>
+  </footer>
+
+  <script src="js/script.js"></script>
 </body>
-</html> <!-- Cierra el documento HTML -->
+</html>
